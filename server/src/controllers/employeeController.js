@@ -106,7 +106,7 @@ const deleteEmployee = async (req, res) => {
       return res.status(404).json({ message: 'Employee not found' });
     }
 
-    await employee.remove();
+    await Employee.deleteOne({ _id: req.params.id });
     res.json({ message: 'Employee deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });

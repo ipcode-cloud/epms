@@ -48,8 +48,7 @@ const getMonthlyPayroll = async (req, res) => {
       }
     })
     .populate('employee', 'firstName lastName position')
-    .populate('department', 'departmentName')
-    .select('employee department netSalary');
+    .populate('department', 'departmentName');
 
     res.json(payroll);
   } catch (error) {
@@ -101,7 +100,7 @@ const deleteSalary = async (req, res) => {
       return res.status(404).json({ message: 'Salary record not found' });
     }
 
-    await salary.remove();
+    await Salary.deleteOne({ _id: req.params.id });
     res.json({ message: 'Salary record deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });

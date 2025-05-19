@@ -70,7 +70,7 @@ const deleteDepartment = async (req, res) => {
       return res.status(404).json({ message: 'Department not found' });
     }
 
-    await department.remove();
+    await Department.deleteOne({ _id: req.params.id });
     res.json({ message: 'Department deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
