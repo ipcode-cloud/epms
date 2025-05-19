@@ -1,1 +1,78 @@
-GET http://localhost:3000/home
+### Variables
+@baseUrl = http://localhost:5000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODJiNDRmNjAwZTU0MjBhNTEzZDkzMjkiLCJpYXQiOjE3NDc2NjczMjgsImV4cCI6MTc0ODI3MjEyOH0.mlMfm_5B4eL48kyimtIp_9QDKZdQWPyq0iB_q90GGtY
+@departmentId = 682b480f6387cc1898d8083c
+@employeeId = 682b4a366387cc1898d80846
+
+### Register HR user (only needed once)
+POST {{baseUrl}}/users/register
+Content-Type: application/json
+
+{
+    "email": "hr@smartpark.com",
+    "password": "hr123456",
+    "role": "hr"
+}
+
+### Login as HR
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+    "email": "hr@smartpark.com",
+    "password": "hr123456"
+}
+
+### Create department
+POST {{baseUrl}}/departments
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "departmentCode": "DEPT001",
+    "departmentName": "Parking Operations",
+    "grossSalary": 500000
+}
+
+### Get all departments (to get department ID)
+GET {{baseUrl}}/departments
+Authorization: Bearer {{token}}
+
+### Create new employee
+POST {{baseUrl}}/employees
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "employeeNumber": "EMP001",
+    "firstName": "John",
+    "lastName": "Doe",
+    "position": "Parking Attendant",
+    "address": "123 Main St, Rubavu",
+    "telephone": "+250788123456",
+    "gender": "Male",
+    "hiredDate": "2024-01-01",
+    "department": "{{departmentId}}"
+}
+
+### Get all employees
+GET {{baseUrl}}/employees
+Authorization: Bearer {{token}}
+
+### Create salary record
+POST {{baseUrl}}/salaries
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "employeeId": "{{employeeId}}",
+    "departmentId": "{{departmentId}}",
+    "grossSalary": 500000,
+    "totalDeduction": 50000,
+    "month": "2024-03-01"
+}
+
+### Get monthly payroll report
+GET {{baseUrl}}/salaries/monthly?month=3&year=2024
+Authorization: Bearer {{token}}
+
